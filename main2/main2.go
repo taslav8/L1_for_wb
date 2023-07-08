@@ -11,8 +11,8 @@ func calculate(arr []int) {
 	for _, n := range arr {
 		wg.Add(1)
 
-		go func(n int) {
-			fmt.Println(n * n) //Расчет квадрата и вывод его в отдельной горутине
+		go func(i int) {
+			fmt.Println(i * i) //Расчет квадрата и вывод его в отдельной горутине
 			wg.Done()
 		}(n)
 	}
