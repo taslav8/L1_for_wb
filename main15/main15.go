@@ -1,23 +1,24 @@
 package main
 
-func createHugeString(size uint64) string {
-	return string(make([]rune, size))
-}
+import (
+	"fmt"
+	"strings"
+)
 
-func getSlice(v string, from, to uint64) string {
-	data := []rune(v)
-	slice := make([]rune, 0)
-	for i := from; i < to; i++ {
-		slice = append(slice, data[i])
-	}
-	return string(slice)
+func createHugeString(size int) string {
+	return strings.Repeat("/", size)
 }
 
 var justString string
 
 func someFunc() {
 	v := createHugeString(1 << 10)
-	justString = getSlice(v, 0, 100)
+	buff := make([]byte, 100)
+	copy(buff, v[:100])
+	justString = string(buff)
+
+	fmt.Println("Current string:", v)
+	fmt.Println("The newest string:", justString)
 }
 
 func main() {
