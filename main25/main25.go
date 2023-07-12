@@ -1,30 +1,38 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"time"
 )
 
-// sleep завершает работу после чтения из канала, возвращаемого функцией time.After(duration)
-func sleep(duration time.Duration) {
-	<-time.After(duration)
-}
-
-// sleep завершает работу после чтения из канала, возвращаемого объектом time.NewTimer(duration)
-func sleep2(duration time.Duration) {
-	timer := time.NewTimer(duration)
-
-	<-timer.C
-}
-
 func main() {
-	// вариант 1
-	fmt.Println("Ожидаем 5 секунд")
-	sleep(5 * time.Second)
-	fmt.Println("Время истекло")
+	now := time.Now()
+	Sleep1(2 * time.Second)
+	fmt.Println(time.Now().Sub(now))
 
-	// вариант 2
-	fmt.Println("Ожидаем 5 секунд")
-	sleep2(5 * time.Second)
-	fmt.Println("Время истекло")
+	now = time.Now()
+	Sleep2(2 * time.Second)
+	fmt.Println(time.Now().Sub(now))
+
+	now = time.Now()
+	Sleep3(2 * time.Second)
+	fmt.Println(time.Now().Sub(now))
+}
+
+func Sleep1(tm time.Duration) {
+	<-time.After(tm)
+}
+
+func Sleep2(tm time.Duration) {
+	tick := time.Tick(tm / 100)
+	for i := 0; i < 100; i++ {
+		<-tick
+	}
+}
+
+func Sleep3(tm time.Duration) {
+	timeout, cancelFunc := context.WithTimeout(context.Background(), tm)
+	defer cancelFunc()
+	<-timeout.Done()
 }

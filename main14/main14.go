@@ -2,28 +2,22 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"reflect"
 )
 
-func typeDetection(a interface{}) {
-	switch v := a.(type) {
-	case int:
-		fmt.Println("Int")
-	case string:
-		fmt.Println("String")
-	case bool:
-		fmt.Println("Bool")
-	default:
-		t := fmt.Sprintf("%T", v)
-		if strings.Compare(t[0:4], "chan") == 0 {
-			fmt.Println("Channel")
-		} else {
-			fmt.Println("...")
-		}
-	}
+func detectorOne(in interface{}) {
+	fmt.Println(reflect.TypeOf(in))
+}
+func detectorTwo(in interface{}) {
+	fmt.Println(reflect.ValueOf(in).Kind())
+}
+func detectorThree(in interface{}) {
+	fmt.Println(fmt.Sprintf("%T", in))
 }
 
 func main() {
 	var a int64
-	typeDetection(a)
+	detectorOne(a)
+	detectorTwo(a)
+	detectorThree(a)
 }

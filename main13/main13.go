@@ -1,14 +1,24 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync/atomic"
+)
 
 func main() {
-	var a, b int64
+	var a, b int64 = 999, 121
+	fmt.Printf("До: a = %d, b = %d\n", a, b)
 
-	a = 64
-	b = 128
-
+	//******************************************** Способы:
 	a, b = b, a
+	fmt.Printf("После:  a = %d, b = %d\n", a, b)
 
-	fmt.Printf("a: %d\nb: %d\n", a, b)
+	a ^= b
+	b ^= a
+	a ^= b
+	fmt.Printf("После:  a = %d, b = %d\n", a, b)
+
+	b = atomic.SwapInt64(&a, b)
+	fmt.Printf("После:  a = %d, b = %d\n", a, b)
+
 }
